@@ -1,0 +1,47 @@
+# Fichiers et dossiers générés automatiquement par Python
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+
+# Environnements virtuels Python
+env/
+venv/
+ENV/
+VENV/
+
+# Fichiers de configuration personnels ou secrets
+*.env
+*.sqlite3
+db.sqlite3
+
+# Staticfiles générés par collectstatic
+staticfiles/
+static/
+
+# Dossiers et fichiers liés à l'IDE
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Journaux
+*.log
+
+# Fichiers temporaires du système
+.DS_Store
+Thumbs.db
+
+# Caches de tests
+.tox/
+.nox/
+.coverage
+.cache
+
+# Fichiers générés par pip
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Dépendances de type lockfiles (si utilisé)
+poetry.lock
+Pipfile.lock
