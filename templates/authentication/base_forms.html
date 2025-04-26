@@ -1,0 +1,41 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock title %}</title>
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+    <link rel="stylesheet" href="{% static 'css/authentication/style_1.css' %}">
+        <!-- Font Awesome pour les icônes -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row auth-container">
+          <!-- Section gauche -->
+            <div class="col-md-6 auth-left text-center color-freq">
+                <div class="logo-container">
+                    <img src="{% static 'images/logo.png' %}" alt="logo" />
+                </div>
+                <h1>REJOIGNEZ SEN-EVENT</h1>
+                <p>Et ne manquez plus aucun evenement qui compte pour vous</p>
+            </div>
+            <!-- Section droite -->
+            <div class="col-md-6 auth-right d-flex">
+                <!-- Contenu des formulaires -->
+                <div class="tab-content w-100 m-auto d-flex align-items-center justify-content-center h-100"> 
+                    {% block content %}{% endblock content %}
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

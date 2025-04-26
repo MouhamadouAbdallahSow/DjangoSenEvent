@@ -1,0 +1,156 @@
+{% extends "base.html" %} 
+{% load static %}
+
+{% block header %}
+
+  <div
+    id="carouselExampleIndicators"
+    class="carousel slide"
+    data-bs-ride="carousel"
+  >
+    <!-- Indicateurs -->
+    <div class="carousel-indicators">
+      <button
+        type="button"
+        data-bs-target="#carouselExampleIndicators"
+        data-bs-slide-to="0"
+        class="active"
+        aria-current="true"
+      ></button>
+      <button
+        type="button"
+        data-bs-target="#carouselExampleIndicators"
+        data-bs-slide-to="1"
+      ></button>
+      <button
+        type="button"
+        data-bs-target="#carouselExampleIndicators"
+        data-bs-slide-to="2"
+      ></button>
+    </div>
+
+    <!-- Images -->
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img
+          src="{% static 'images/header/image1.jpg' %}"
+          class="d-block slide-img"
+          alt="Slide 1"
+        />
+      </div>
+      <div class="carousel-item">
+        <img
+          src="{% static 'images/header/image2.jpg' %}"
+          class="d-block slide-img"
+          alt="Slide 2"
+        />
+      </div>
+      <div class="carousel-item">
+        <img
+          src="{% static 'images/header/image3.jpg' %}"
+          class="d-block slide-img"
+          alt="Slide 3"
+        />
+      </div>
+    </div>
+
+    <!-- Contrôles -->
+    <button
+      class="carousel-control-prev"
+      type="button"
+      data-bs-target="#carouselExampleIndicators"
+      data-bs-slide="prev"
+    >
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button
+      class="carousel-control-next"
+      type="button"
+      data-bs-target="#carouselExampleIndicators"
+      data-bs-slide="next"
+    >
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+
+    <div class="fixed-navbar">
+      <!-- Header -->
+      {% include "partials/header.html" %}
+    </div>
+    <!-- Légende fixe -->
+    <div class="carousel-caption fixed-caption">
+      {% if user.is_authenticated %}
+      <h5>Bienvenue {{user.username}} sur SEN-EVENT</h5>
+      {% else %}
+      <h5>Bienvenue sur SEN-EVENT</h5>
+      {% endif %}
+
+      <p>Explorez le Sénégal, un évènement à la fois</p>
+    </div>
+  </div>
+
+{% endblock %} 
+
+{% block content %}
+
+<!-- About Section -->
+<section class="about-section">
+  <div class="container">
+    <h1>À propos de nous</h1>
+    <div class="row">
+      <div class="col align-items-center video_about">
+        <!-- Video 1 -->
+        <div class="row-md-6 mb-5">
+          <div class="video-card">
+            <img src="{% static "images/videos/video_img_2.jpg" %}" alt="Video
+            1" />
+            <div class="video-overlay">
+              <i class="bi bi-play-circle"></i>
+            </div>
+            <div class="stats">5000+<br />Nos Membres</div>
+            <div class="review_stat">8000+<br />Reviews</div>
+          </div>
+        </div>
+        <!-- Video 2 -->
+        <div class="row-md-6 mb-4">
+          <div class="video-card">
+            <img src="{% static "images/videos/video_img_1.jpg" %}" alt="Video
+            2" />
+            <div class="video-overlay">
+              <i class="bi bi-play-circle"></i>
+            </div>
+            <div class="stats">5000+<br />Nos Membres</div>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="col-md-12 text-center">
+          <h2 class="mt-4">Qui Sommes Nous ?</h2>
+          <p>
+            SEN-EVENT facilite les échanges entre la jeunesse et les experts ou
+            célébrités reconnus dans plusieurs domaines...
+          </p>
+          <button class="explore-btn">Explorez</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Trusted Section -->
+<section class="trusted-section">
+  <div class="container">
+    <p>Fait confiance par plus de 10 000 entreprises à travers le Sénégal.</p>
+    <div class="trusted-logos">
+      <img src="" alt="Google" />
+      <img src="" alt="Facebook" />
+      <img src="" alt="YouTube" />
+      <img src="" alt="Pinterest" />
+      <img src="" alt="Twitch" />
+      <img src="" alt="Webflow" />
+    </div>
+  </div>
+</section>
+
+{% endblock %}

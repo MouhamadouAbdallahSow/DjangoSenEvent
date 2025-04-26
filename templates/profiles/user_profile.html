@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil de {{ user.get_full_name }}</title>
+    <style>
+        :root {
+            --creator-color: #4a90e2;
+            --participant-color: #ff6b6b;
+            --visitor-color: #1E3E62;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            line-height: 1.6;
+            background: #f8f9fa;
+        }
+
+        .profile-container {
+            position: relative;
+            margin: 2rem auto;
+            max-width: 1200px;
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .profile-container:hover {
+            transform: translateY(-5px);
+        }
+
+        .cover-photo {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            position: relative;
+        }
+
+        .cover-photo::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 60%;
+            background: linear-gradient(transparent, rgba(0,0,0,0.2));
+        }
+
+        .profile-photo-container {
+            position: absolute;
+            bottom: -75px;
+            left: 50px;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .profile-photo {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 4px solid white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            object-fit: cover;
+        }
+
+        .profile-type-badge {
+            padding: 0.5rem 1.5rem;
+            border-radius: 2rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .creator .profile-type-badge { background: var(--creator-color); }
+        .participant .profile-type-badge { background: var(--participant-color); }
+        .visitor .profile-type-badge { background: var(--visitor-color); }
+
+        .profile-content {
+            padding: 2rem 3rem 3rem;
+            margin-top: 4rem;
+        }
+
+        .user-name {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .common-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            margin-top: 2rem;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .info-item svg {
+            width: 20px;
+            height: 20px;
+            opacity: 0.8;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .profile-photo-container {
+                left: 50%;
+                transform: translateX(-50%);
+                bottom: -100px;
+                align-items: center;
+                text-align: center;
+            }
+
+            .profile-content {
+                padding: 6rem 1.5rem 2rem;
+                margin-top: 0;
+            }
+
+            .user-name {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        /* Specific styles */
+        .creator .cover-photo { height: 400px; }
+        .creator .profile-photo { 
+            width: 200px;
+            height: 200px;
+            border-width: 5px;
+        }
+
+        .participant .profile-content {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 3rem;
+        }
+
+        .events-participation {
+            background: #fff9f2;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="fixed-navbar">
+        <!-- Header -->
+        {% include "partials/header.html" %}
+      </div>
+    <div class="profile-container {{ user.profile_type }}">
+        <!-- Cover Photo -->
+        {% if user.cover_photo %}
+            <img src="{{ user.cover_photo.url }}" class="cover-photo" alt="Cover photo">
+        {% else %}
+            <div class="cover-photo" style="background: linear-gradient(135deg, #f0f0f0 0%, #dcdcdc 100%);"></div>
+        {% endif %}
+
+        <!-- Profile Photo & Badge -->
+        <div class="profile-photo-container">
+            {% if user.profile_photo %}
+                <img src="{{ user.profile_photo.url }}" class="profile-photo" alt="Profile photo">
+            {% else %}
+                <div class="profile-photo" style="background-color: #cccccc;"></div>
+            {% endif %}
+            <div class="profile-type-badge">
+                {{ user.get_profile_type_display }}
+            </div>
+        </div>
+
+        <!-- Profile Content -->
+        <div class="profile-content">
+            <h1 class="user-name">
+                {{ user.get_full_name }}
+                {% if user.profile_type == 'creator' %}🎨
+                {% elif user.profile_type == 'participant' %}🎟️
+                {% else %}👋{% endif %}
+            </h1>
+
+            {% if user.profile_type == 'creator' %}
+                <div class="creator-dashboard">
+                    <h2>Vos événements créés</h2>
+                    <!-- Event cards grid -->
+                </div>
+            {% elif user.profile_type == 'participant' %}
+                <div class="participant-info">
+                    <div class="events-participation">
+                        <h2>Vos participations</h2>
+                        <!-- Participation list -->
+                    </div>
+                </div>
+            {% else %}
+                <div class="visitor-info">
+                    <p class="call-to-action">Découvrez nos événements publics ➡️</p>
+                </div>
+            {% endif %}
+
+            <!-- Common Info -->
+            <div class="common-info">
+                <div class="info-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                    </svg>
+                    <span>{{ user.get_profile_type_display }}</span>
+                </div>
+                
+                <div class="info-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                    </svg>
+                    <span>{{ user.email }}</span>
+                </div>
+                
+                <div class="info-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                    </svg>
+                    <span>Membre depuis {{ user.date_joined|date:"d/m/Y" }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

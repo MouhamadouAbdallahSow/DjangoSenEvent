@@ -1,0 +1,396 @@
+{% extends "CreateEvent/createEvent.html" %} {% load static %} {% comment %}
+new_block {% endcomment %} {% block EventCreate %}
+
+<style>
+  .btn-primary {
+    background-color: #ff6600;
+    border-color: #ff6600;
+  }
+  .btn-primary:hover {
+    background-color: #e55c00;
+    border-color: #e55c00;
+  }
+  .btn-continuer {
+    position: absolute;
+    right: 10%;
+  }
+  .progress-bar.bg-warning {
+    background-color: #ff6600 !important; /* Orange vif */
+  }
+</style>
+<div class="container m-5">
+  <div class="text-center">
+    <div class="progress mb-4" style="height: 20px">
+      <div
+        class="progress-bar bg-warning progress-bar-striped"
+        role="progressbar"
+        style="width: 25%"
+        aria-valuenow="25"
+        aria-valuemin="0"
+        aria-valuemax="100"
+      ></div>
+    </div>
+    <h4 class="mb-4">Remplissage des details de l'evenement</h4>
+  </div>
+  <!-- Form -->
+  <form method="POST" class="m-5">
+    {% csrf_token %}
+    <div class="mb-3 row">
+      <label for="title" class="col-sm-2 col-form-label">Titre *</label>
+      <div class="col-sm-10">
+        <input
+          type="text"
+          class="form-control py-2"
+          id="title"
+          name="titre"
+          placeholder="Entrer le nom de l'événement"
+        />
+      </div>
+    </div>
+    <div class="mb-3">
+      <label for="category" class="form-label d-block">Catégories *</label>
+      <div class="d-flex flex-wrap gap-3">
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            name="categories"
+            value="Musique"
+            id="catMusique"
+          />
+          <label class="form-check-label" for="catMusique">Musique</label>
+        </div>
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            name="categories"
+            value="Sport"
+            id="catSport"
+          />
+          <label class="form-check-label" for="catSport">Sport</label>
+        </div>
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            name="categories"
+            value="Conférence"
+            id="catConference"
+          />
+          <label class="form-check-label" for="catConference">Conférence</label>
+        </div>
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            name="categories"
+            value="Art"
+            id="catArt"
+          />
+          <label class="form-check-label" for="catArt">Art</label>
+        </div>
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            name="categories"
+            value="Bénévolat"
+            id="catBénévolat"
+          />
+          <label class="form-check-label" for="catBénévolat">Bénévolat</label>
+        </div>
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            name="categories"
+            value="Metting"
+            id="catMetting"
+          />
+          <label class="form-check-label" for="catMetting">Metting</label>
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="mb-3">
+      <label class="form-label">Type *</label>
+      <div>
+        <div class="form-check form-check-inline">
+          <input
+            class="form-check-input"
+            type="radio"
+            name="eventType"
+            id="uniqueEvent"
+            value="unique"
+          />
+          <label class="form-check-label" for="uniqueEvent"
+            >Événement unique</label
+          >
+        </div>
+        <div class="form-check form-check-inline">
+          <input
+            class="form-check-input"
+            type="radio"
+            name="eventType"
+            id="recurringEvent"
+            value="recurring"
+          />
+          <label class="form-check-label" for="recurringEvent"
+            >Événement récurrent</label
+          >
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <label for="startDate" class="form-label">Date de début *</label>
+        <input type="date" name="date" class="form-control" id="startDate" />
+      </div>
+      <div class="col-md-6">
+        <label for="startTime" class="form-label">Heure début *</label>
+        <input type="time" name="heure" class="form-control" id="startTime" />
+      </div>
+    </div>
+
+    <div class="my-5">
+      <label class="form-label">Chronogramme ou Planning</label>
+      <input type="file" name="chronogramme" class="form-control" />
+    </div>
+
+    <div class="my-5 mt-3">
+      <label for="location" class="form-label"
+        >Où aura lieu votre événement ? *</label
+      >
+
+      <!-- Région et Ville -->
+      <div class="row g-3">
+        <div class="col-md-6">
+          <select id="region" name="region" class="form-select">
+            <option selected>Région...</option>
+            <option value="Dakar">Dakar</option>
+            <option value="Thiès">Thiès</option>
+            <option value="Saint-Louis">Saint-Louis</option>
+            <option value="Ziguinchor">Ziguinchor</option>
+            <option value="Kaolack">Kaolack</option>
+            <option value="Fatick">Fatick</option>
+            <option value="Tambacounda">Tambacounda</option>
+            <option value="Kédougou">Kédougou</option>
+            <option value="Kolda">Kolda</option>
+            <option value="Matam">Matam</option>
+            <option value="Louga">Louga</option>
+            <option value="Diourbel">Diourbel</option>
+            <option value="Sédhiou">Sédhiou</option>
+          </select>
+        </div>
+        <div class="col-md-6">
+          <select id="ville" name="ville" class="form-select">
+            <option selected>Ville...</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Lieu exact -->
+      <div class="mt-3">
+        <input
+          type="text"
+          class="form-control py-2"
+          id="lieu_exact"
+          name="Lieu_exact"
+          placeholder="Où exactement ?"
+        />
+      </div>
+    </div>
+
+    <div class="mb-5">
+      <!-- Description de l'événement -->
+      <label for="description" class="form-label"
+        >Description de l'événement *</label
+      >
+      <textarea
+        id="description"
+        name="description"
+        class="form-control"
+        rows="3"
+        placeholder="Décrivez ce qui rend votre événement spécial et ajoutez d'autres détails importants."
+      ></textarea>
+
+      <!-- Slogan -->
+      <div class="mt-3">
+        <label for="slogan" class="form-label">Slogan</label>
+        <input
+          type="text"
+          class="form-control py-2"
+          id="slogan"
+          name="slogan"
+          placeholder="Entrez un slogan captivant pour l'événement"
+        />
+      </div>
+      <div class="mt-3">
+        <label for="lien" class="form-label">Lien de diffusion</label>
+        <input
+          type="text"
+          class="form-control py-2"
+          id="lien"
+          name="lien"
+          placeholder="Entrez un lien unique de diffusion"
+        />
+      </div>
+    </div>
+
+    <!-- Section Ajout des Intervenants -->
+    <h4 class="mt-5">Ajouter des intervenants</h4>
+    <div id="speakersSection">
+      <div class="mb-3 speaker">
+        <div class="row">
+          <div class="col-md-4">
+            <label class="form-label">Prénom</label>
+            <input
+              type="text"
+              name="speakers[0][prenom]"
+              class="form-control"
+              placeholder="Prénom"
+            />
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Nom</label>
+            <input
+              type="text"
+              name="speakers[0][nom]"
+              class="form-control"
+              placeholder="Nom"
+            />
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Fonction</label>
+            <input
+              type="text"
+              name="speakers[0][fonction]"
+              class="form-control"
+              placeholder="Fonction"
+            />
+          </div>
+        </div>
+        <div class="mb-3 mt-3">
+          <label class="form-label">Description de la fonction</label>
+          <textarea
+            name="speakers[0][description]"
+            class="form-control"
+            rows="2"
+            placeholder="Décrivez la fonction"
+          ></textarea>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Photo de profil (optionnel)</label>
+          <input type="file" name="speakers[0][photo]" class="form-control" />
+        </div>
+        <div class="mb-3">
+          <h6 class="mt-5">Liens de réseaux sociaux</h6>
+          <div class="row">
+            <div class="col-md-6">
+              <label class="form-label">Instagram</label>
+              <input
+                type="text"
+                name="speakers[0][instagram]"
+                class="form-control"
+                placeholder="Lien Instagram"
+              />
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Facebook</label>
+              <input
+                type="text"
+                name="speakers[0][facebook]"
+                class="form-control"
+                placeholder="Lien Facebook"
+              />
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-md-6">
+              <label class="form-label">Twitter</label>
+              <input
+                type="text"
+                name="speakers[0][twitter]"
+                class="form-control"
+                placeholder="Lien Twitter"
+              />
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">LinkedIn</label>
+              <input
+                type="text"
+                name="speakers[0][linkedin]"
+                class="form-control"
+                placeholder="Lien LinkedIn"
+              />
+            </div>
+          </div>
+        </div>
+        <hr />
+      </div>
+    </div>
+    <button type="button" class="btn btn-secondary mb-3" id="addSpeaker">
+      Ajouter un intervenant
+    </button>
+
+    <button type="submit" class="btn my-5 btn-primary btn-continuer">
+      Continuer
+    </button>
+  </form>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  let speakerCount = 1;
+  document.getElementById("addSpeaker").addEventListener("click", () => {
+    const speakersSection = document.getElementById("speakersSection");
+    const newSpeaker = document.querySelector(".speaker").cloneNode(true);
+
+    // Met à jour les noms des champs avec le nouvel index
+    Array.from(newSpeaker.querySelectorAll("input, textarea")).forEach(
+      (input) => {
+        const name = input.name.replace(/\[\d+\]/, `[${speakerCount}]`);
+        input.name = name;
+        input.value = ""; // Réinitialise la valeur
+      }
+    );
+
+    speakersSection.appendChild(newSpeaker);
+    speakerCount++;
+  });
+
+  document.addEventListener("DOMContentLoaded", function () {
+    const regionSelect = document.getElementById("region");
+    const villeSelect = document.getElementById("ville");
+
+    regionSelect.addEventListener("change", function () {
+      const selectedRegion = regionSelect.value;
+
+      // Vider la liste des villes
+      villeSelect.innerHTML = "<option selected>Ville...</option>";
+
+      if (selectedRegion) {
+        // Faire une requête AJAX pour obtenir les villes
+        fetch(`/CreateEvent/api/villes/?region=${selectedRegion}`)
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.villes) {
+              data.villes.forEach((ville) => {
+                const option = document.createElement("option");
+                option.value = ville;
+                option.textContent = ville;
+                villeSelect.appendChild(option);
+              });
+            }
+          })
+          .catch((error) =>
+            console.error("Erreur lors du chargement des villes :", error)
+          );
+      }
+    });
+  });
+</script>
+{% endblock %}

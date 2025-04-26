@@ -1,0 +1,83 @@
+/* You can add global styles to this file, and also import other style files */
+/* Global styles */
+body {
+    font-family: 'Arial', sans-serif;
+  }
+  header{
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 1rem 0;
+  }
+  /* Navbar styles */
+  .nav-link {
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.5) !important;
+    transition: color 0.3s ease;
+  }
+  
+  
+  .nav-link:hover {
+    color: #FF6500 !important;
+  }
+  
+  .navbar-brand span {
+    font-size: 1.5rem;
+  }
+  
+  /* Carousel styles */
+  .carousel-caption {
+    padding: 1rem;
+    border-radius: 0.5rem;
+  }
+  
+  .carousel-caption h5 {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #fff;
+  }
+  
+  .carousel-caption p {
+    font-size: 1.2rem;
+    color: #ddd;
+  }
+  
+  .carousel-indicators button {
+    background-color: #ff8000;
+  }
+  
+  /* Fixe la légende */
+.fixed-caption {
+    position: absolute;
+    top: 80%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10; /* Assure que la légende reste au-dessus des images */
+    padding: 1rem 0rem;
+    border-radius: 0.5rem;
+    text-align: center;
+    color: white;
+  }
+  
+  .carousel-inner {
+    position: relative;
+  }
+  
+  .carousel-caption h5 {
+    font-size: 2rem;
+    font-weight: bold;
+  }
+  
+  .carousel-caption p {
+    font-size: 1.2rem;
+    margin-top: 0.5rem;
+  }
+  .slide-img{
+    height: 100vh;
+    width: 100%;
+  }
+  /* Fixe navbar */
+  .fixed-navbar{
+    position: absolute;
+    top: 0%;
+    z-index: 10;
+    width: 100%;
+  }

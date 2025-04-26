@@ -1,0 +1,396 @@
+{% extends "authentication/base_forms.html" %}
+{% load static %}
+{% load socialaccount %}
+{% block title %}Inscription{% endblock title %}
+
+{% block content %}
+    <style>
+        .form-container {
+            width: 100%; 
+            max-width: 450px;
+            padding: 1rem;
+            transform: translateZ(0);
+            transition: all 0.4s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            border-radius: 12px;
+            background-color: #f8f9fa;
+            margin: 0 auto;
+            animation: fadeIn 0.6s ease-out;
+        }
+        
+        .form-container:hover {
+            box-shadow: 0 8px 25px rgba(255, 101, 0, 0.15);
+            transform: translateZ(0) translateY(-3px);
+        }
+        
+        .logo-container img {
+            width: 100px;
+            height: auto;
+            display: block;
+            margin: 0 auto 12px;
+            transition: transform 0.3s ease;
+        }
+        
+        .logo-container img:hover {
+            transform: scale(1.05);
+        }
+        
+        .color-fav {
+            color: #FF6500;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .color-fav:hover {
+            color: #ff4500;
+        }
+        
+        .color-fav::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: #ff4500;
+            transition: width 0.3s ease;
+        }
+        
+        .color-fav:hover::after {
+            width: 100%;
+        }
+        
+        .btn {
+            font-weight: 500;
+            letter-spacing: 0.3px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: all 0.6s ease;
+        }
+        
+        .btn:hover::before {
+            left: 100%;
+        }
+        
+        .btn-outline-secondary {
+            border-color: #1E3E62;
+            background-color: #1E3E62;
+            color: white;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-outline-secondary:hover {
+            background-color: #FF6500;
+            border-color: #FF6500;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(255, 101, 0, 0.25);
+        }
+        
+        .btn-outline-secondary:active {
+            transform: translateY(-1px);
+            box-shadow: 0 3px 6px rgba(255, 101, 0, 0.25);
+        }
+        
+        .sbmnt-btn {
+            border-radius: 10px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .separator {
+            position: relative;
+            text-align: center;
+            margin: 0.5rem 0;
+            transition: all 0.3s ease;
+        }
+        
+        .separator:hover span {
+            color: #FF6500;
+        }
+        
+        .separator span {
+            background-color: #f8f9fa;
+            padding: 0 1rem;
+            position: relative;
+            z-index: 1;
+            color: #6c757d;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+        
+        .separator::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #dee2e6, transparent);
+            z-index: 0;
+            transition: all 0.3s ease;
+        }
+        
+        .separator:hover::before {
+            background: linear-gradient(90deg, transparent, #FF6500, transparent);
+            height: 2px;
+        }
+        
+        .social-login .btn {
+            background-color: #FF6500;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            color: white;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            padding: 0.4rem;
+        }
+        
+        .social-login .btn:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 8px 15px rgba(255, 101, 0, 0.3);
+            background-color: #ff4500;
+        }
+        
+        .social-login .btn:active {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(255, 101, 0, 0.3);
+        }
+        
+        .social-icon {
+            width: 16px;
+            height: 16px;
+            margin-right: 8px;
+            transition: transform 0.3s ease;
+        }
+        
+        .social-login .btn:hover .social-icon {
+            transform: rotate(360deg);
+        }
+        
+        .w-80 {
+            width: 220px;
+        }
+        
+        .form-control {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+            padding: 0.5rem 1rem;
+            border-radius: 8px !important;
+            margin-bottom: 0.5rem;
+            border: 1px solid #ced4da;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            font-size: 0.85rem;
+        }
+        
+        .form-control:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(255, 101, 0, 0.1);
+            border-color: #FF6500;
+        }
+        
+        .form-control:focus {
+            border-color: #FF6500;
+            box-shadow: 0 0 0 3px rgba(255, 101, 0, 0.25);
+            transform: translateY(-2px);
+        }
+        
+        .password-container {
+            position: relative;
+            margin-bottom: 0.5rem;
+        }
+        
+        .password-toggle {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #6c757d;
+            transition: all 0.3s ease;
+            padding: 4px;
+            font-size: 0.85rem;
+        }
+        
+        .password-toggle:hover {
+            color: #FF6500;
+            transform: translateY(-50%) scale(1.2);
+        }
+        
+        .form-check-input {
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border-radius: 3px;
+            border: 2px solid #ced4da;
+        }
+        
+        .form-check-input:checked {
+            background-color: #FF6500;
+            border-color: #FF6500;
+            animation: pulse 0.5s;
+        }
+        
+        .form-check-input:hover {
+            transform: scale(1.1);
+            border-color: #FF6500;
+        }
+        
+        .form-check-label {
+            transition: color 0.3s ease;
+            font-size: 0.75rem;
+        }
+        
+        .form-check:hover .form-check-label {
+            color: #FF6500;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        
+        h2 {
+            transition: all 0.3s ease;
+            position: relative;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 50%;
+            width: 0;
+            height: 3px;
+            background-color: #FF6500;
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+        
+        h2:hover::after {
+            width: 60px;
+        }
+        
+        .text-danger {
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+            padding-left: 8px;
+            font-size: 0.75rem;
+        }
+        
+        .text-danger:hover {
+            border-left: 3px solid #dc3545;
+            background-color: rgba(220, 53, 69, 0.05);
+            padding-left: 10px;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .text-center {
+            margin-bottom: 0.5rem;
+        }
+        
+        .form-check {
+            margin: 0.5rem 0;
+        }
+        
+        .compact-form p {
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .social-login {
+            margin-top: 0.5rem;
+        }
+    </style>
+
+    <div class="form-container">
+        <h2 class="text-center">Créer un compte</h2>
+        <p class="text-center">Vous avez déjà un compte ? 
+            <a href="{% url 'authentication:login' %}" class="color-fav">Se connecter</a>
+        </p>
+        
+        <form method="post" novalidate class="compact-form">
+            {% csrf_token %}
+            
+            {% for field in form %}
+                <div class="{% if field.name == 'password1' or field.name == 'password2' %}password-container{% endif %}">
+                    {{ field }}
+                    {% if field.name == 'password1' or field.name == 'password2' %}
+                        <i class="password-toggle fa-solid fa-eye" 
+                           onclick="togglePassword('{{ field.auto_id }}')"></i>
+                    {% endif %}
+                    {% if field.errors %}
+                        <div class="text-danger small">{{ field.errors }}</div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="terms" />
+                <label class="form-check-label">
+                    J'accepte les
+                    <a href="#" class="color-fav">conditions d'utilisation</a> et la
+                    <a href="#" class="color-fav">politique de confidentialité</a>
+                </label>
+            </div>
+            
+            <button type="submit" class="btn btn-outline-secondary sbmnt-btn w-100 mb-2">
+                Continuer
+            </button>
+            
+            <div class="separator">
+                <span>Ou</span>
+            </div>
+            
+            <div class="social-login d-flex flex-column align-items-center">
+                <a href="{% provider_login_url 'google' %}" >
+                    <button type="button" class="btn w-80 d-flex align-items-center justify-content-center">
+                        <i class="fab fa-google social-icon"></i>
+                        <span>Se connecter avec Google</span>
+                    </button>
+                </a>
+                <button type="button" class="btn w-80 d-flex align-items-center justify-content-center">
+                    <i class="fab fa-facebook-f social-icon"></i>
+                    <span>Se connecter avec Facebook</span>
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        function togglePassword(inputId) {
+            const input = document.getElementById(inputId);
+            const icon = input.nextElementSibling;
+            if (input.type === "password") {
+                input.type = "text";
+                icon.classList.replace('fa-eye', 'fa-eye-slash');
+            } else {
+                input.type = "password";
+                icon.classList.replace('fa-eye-slash', 'fa-eye');
+            }
+        }
+    </script>
+{% endblock content %}

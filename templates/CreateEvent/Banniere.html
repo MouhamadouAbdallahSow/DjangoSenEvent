@@ -1,0 +1,142 @@
+{% extends "CreateEvent/createEvent.html" %} {% load static %} {% comment %}
+new_block {% endcomment %} {% block EventCreate %}
+
+<style>
+  .text-primary {
+    color: #ff6600 !important; /* Orange vif */
+  }
+
+  .border-warning {
+    border-color: #ff6600 !important; /* Orange vif */
+  }
+
+  .btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+  }
+
+  .btn-outline-warning {
+    color: #ff6600;
+    border-color: #ff6600;
+  }
+
+  .progress-bar.bg-warning {
+    background-color: #ff6600 !important; /* Orange vif */
+  }
+</style>
+<div class="container mt-5">
+  <div class="text-center">
+    <div class="progress mb-4" style="height: 20px">
+      <div
+        class="progress-bar bg-warning progress-bar-striped"
+        role="progressbar"
+        style="width: 50%"
+        aria-valuenow="50"
+        aria-valuemin="0"
+        aria-valuemax="100"
+      ></div>
+    </div>
+    <h4 class="mb-4">Télécharger une image ou une vidéo</h4>
+  </div>
+
+  <p class="text-muted">
+    L'image ou la vidéo doit mesurer au moins 1170 pixels de large par 504
+    pixels de haut.
+  </p>
+  <h1>{{error}}</h1>
+  <form method="POST" action="" enctype="multipart/form-data">
+    {% csrf_token %}
+    <!-- Choix entre Image ou Vidéo -->
+    <div class="mb-4">
+      <label class="form-label">Type de média :</label>
+      <select id="mediaType" name="mediaType" class="form-select">
+        <option value="image">Image</option>
+        <option value="video">Vidéo</option>
+      </select>
+    </div>
+
+    <!-- Section pour l'Image -->
+    <div id="imageSection">
+      <label class="form-label">Télécharger une image :</label>
+      <div
+        class="border border-warning rounded p-4 text-center mb-3"
+        style="min-height: 150px"
+      >
+        <p class="mb-3 text-muted">
+          Glissez vos fichiers ici ou
+          <span class="text-primary" style="cursor: pointer" id="browseText"
+            >parcourir</span
+          >
+        </p>
+
+        <!-- Input file caché -->
+        <input
+          type="file"
+          id="fileInput"
+          name="ImageInput"
+          style="display: none"
+        />
+
+        <small class="text-muted">
+          Format de fichiers valides : .jpg, .jpeg, .png, .gif <br />
+          Fichiers de 10 Mo maximum autorisés
+        </small>
+      </div>
+    </div>
+
+    <!-- Section pour la Vidéo -->
+    <div id="videoSection" class="d-none">
+      <label class="form-label">Télécharger une vidéo :</label>
+      <div
+        class="border border-warning rounded p-4 text-center mb-3"
+        style="min-height: 150px"
+      >
+        <p class="mb-3 text-muted">
+          Glissez vos fichiers ici ou
+          <span class="text-primary" style="cursor: pointer" id="browseText"
+            >parcourir</span
+          >
+        </p>
+        <!-- Input file caché -->
+        <input
+          type="file"
+          id="fileInput"
+          name="videoInput"
+          style="display: none"
+        />
+        <small class="text-muted">
+          Format de fichiers valides : .mp4, .mov, .avi <br />
+          Fichiers de 50 Mo maximum autorisés
+        </small>
+      </div>
+    </div>
+
+    <div class="d-flex justify-content-between mt-4">
+      <button class="btn btn-outline-warning">
+        Retourner à Modifier l'événement
+      </button>
+      <button type="submit" class="btn btn-primary">Continuer</button>
+    </div>
+  </form>
+</div>
+
+<script>
+  document.getElementById("mediaType").addEventListener("change", function () {
+    const selectedType = this.value;
+    const imageSection = document.getElementById("imageSection");
+    const videoSection = document.getElementById("videoSection");
+
+    if (selectedType === "image") {
+      imageSection.classList.remove("d-none");
+      videoSection.classList.add("d-none");
+    } else {
+      imageSection.classList.add("d-none");
+      videoSection.classList.remove("d-none");
+    }
+  });
+  // Lier le texte "parcourir" à l'input file
+  document.getElementById("browseText").addEventListener("click", function () {
+    document.getElementById("fileInput").click();
+  });
+</script>
+{% endblock %}

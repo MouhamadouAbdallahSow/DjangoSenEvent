@@ -1,0 +1,29 @@
+.active{
+    color: white !important;
+
+}
+.createCount{
+    background-color: #FF6500;
+}
+.createCount:hover{
+    background-color: #1E3E62;
+}
+.navbar-brand > span{
+    font-size: xx-large;
+    color: #FF6500;
+}
+.searchbar{
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border: none;
+    color: white;
+    background-color: #1E3E62;
+}
+.searchbar::placeholder{
+    color: white;
+}
+.searchbtn{
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    background-color: #1E3E62;
+}

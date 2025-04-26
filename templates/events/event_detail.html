@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="event-detail">
+    <h1>{{ object.titre }}</h1>
+    <img src="{{ object.image.url }}" alt="Image événement">
+    
+    {% if user.is_participant %}
+    <form method="POST" action="{% url 'events:s_inscrire' object.id %}">
+        {% csrf_token %}
+        <button type="submit">S'inscrire</button>
+    </form>
+    {% endif %}
+
+    <div class="intervenants">
+        <h3>Intervenants</h3>
+        {% for intervenant in object.intervenant_set.all %}
+        <div class="intervenant-card">
+            <img src="{{ intervenant.photo_profil.url }}" alt="{{ intervenant.nom }}">
+            <h4>{{ intervenant.nom }}</h4>
+            <p>{{ intervenant.fonction }}</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

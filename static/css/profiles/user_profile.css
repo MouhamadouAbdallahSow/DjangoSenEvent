@@ -1,0 +1,40 @@
+/* Styles spécifiques aux différents profils */
+.creator .profile-container {
+    background: linear-gradient(to bottom, #ffffff 0%, #f8f9fa 100%);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.participant .profile-container {
+    background-color: #fff9f2;
+    border-color: #ffd8b3;
+}
+
+.visitor .profile-container {
+    background-color: #f5f7fb;
+    border-color: #1E3E62;
+}
+
+/* Badge de statut */
+.profile-type-badge {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-weight: bold;
+}
+
+.creator .profile-type-badge {
+    background-color: #4a90e2;
+    color: white;
+}
+
+.participant .profile-type-badge {
+    background-color: #ff6b6b;
+    color: white;
+}
+
+.visitor .profile-type-badge {
+    background-color: #1E3E62;
+    color: white;
+}

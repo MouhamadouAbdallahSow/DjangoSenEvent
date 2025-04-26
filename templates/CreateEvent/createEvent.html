@@ -1,0 +1,28 @@
+{% extends "home.html" %} {% load static %} {% block content %}
+
+<style>
+  body {
+    font-family: Arial, sans-serif;
+  }
+  .step-indicator {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  .step-indicator div {
+    text-align: center;
+    flex: 1;
+  }
+</style>
+<h2 class="text-center my-4">Créer un nouveau événement</h2>
+
+<!-- Step Indicator -->
+<div class="my-5 step-indicator">
+  <div>Éditer</div>
+  <div>Bannière</div>
+
+  <div>Entrée-tickets</div>
+  <div>Réviser</div>
+</div>
+
+{% block EventCreate %}{% endblock %} {% endblock %}

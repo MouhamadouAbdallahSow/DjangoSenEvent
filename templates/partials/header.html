@@ -1,0 +1,72 @@
+<!-- Header -->
+<header class="">
+  <nav class="navbar navbar-expand-lg navbar-light">
+    <div class="container p-0">
+      <a class="navbar-brand d-flex align-items-center" href="#">
+        <span class="fw-bold">Sen Event</span>
+      </a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarNav"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse ms-5" id="navbarNav">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" href="#">Accueil</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">À propos</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Témoignages</a>
+          </li>
+          <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
+        </ul>
+        <form class="d-flex me-3">
+          {% csrf_token %}
+          <input
+            class="form-control searchbar px-4"
+            type="search"
+            placeholder="Recherche"
+            aria-label="Search"
+          />
+          <button class="btn px-3 searchbtn" style="border: none" type="submit">
+            <i style="color: white" class="bi bi-search"></i>
+          </button>
+        </form>
+        <div class="d-flex align-items-center">
+          <button class="btn mx-4">
+            <i style="color: white" class="bi bi-bell"></i>
+          </button>
+          {% comment %} {% if user.is_authenticated %} {% endcomment %}
+          {% comment %} <a href="{% url "authentification:logout" %}" class="btn createCount text-white">Se deconnecter</a>
+          <a href="{% url 'Profiles:profile1' %}" class="btn">
+            <i class="bi bi-person" style="color: white"></i>
+          </a> {% endcomment %}
+          
+          {% comment %} {% else %} {% endcomment %}
+          {% comment %} {% url "authentification:register1" %} {% endcomment %}
+          <a href="{% if user.is_authenticated %}
+                    {% url 'authentication:logout' %}
+                {% else %}
+                    {% url 'authentication:login' %}
+                {% endif %}"
+          class="btn createCount text-white">
+            {% if user.is_authenticated %}
+                Se déconnecter
+            {% else %}
+                Créer un compte
+            {% endif %}
+          </a>
+
+          {% comment %} {% endif %} {% endcomment %}
+          
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>

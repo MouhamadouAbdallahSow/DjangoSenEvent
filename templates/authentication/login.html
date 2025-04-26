@@ -1,0 +1,412 @@
+{% extends "authentication/base_forms.html" %}
+{% load static %}
+{% load socialaccount %}
+
+{% block title %}Connexion{% endblock title %}
+
+{% block content %}
+    <style>
+        .error-message {
+            color: red;
+            font-size: 0.9rem;
+        }
+        .logosen img {
+            width: 100px;
+            height: 100px;
+        }
+        .logo-container {
+            margin-bottom: 20px;
+        }
+        .logo-container img {
+            width: 150px;
+            height: auto;
+            display: block;
+            margin: 0 auto 20px;
+        }
+        .color-freq {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background-color: #1E3E62;
+            height: 100vh;
+            color: white;
+            text-align: center;
+        }
+        .color-fav {
+            color: #FF6500;
+            text-decoration: none;
+            transition: color 0.2s ease;
+          }
+        .sbmnt-btn{
+        border-radius: 20px;
+        }
+        .btn {
+            font-weight: 500;
+            letter-spacing: 0.3px;
+            transition: all 0.3s ease;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+          
+          .btn-outline-secondary {
+            border-color: #1E3E62;
+            background-color: #1E3E62;
+            color: white;
+            border-radius: 20px;
+          }
+
+          /* Conteneur principal avec animation d'apparition */
+        .form-container {
+            width: 100%;
+            max-width: 450px;
+            padding: 2rem;
+            border-radius: 15px;
+            background-color: #f8f9fa;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.4s ease;
+            animation: fadeIn 0.6s ease-out;
+            margin: 0 auto;
+        }
+
+        .form-container:hover {
+            box-shadow: 0 12px 28px rgba(255, 101, 0, 0.15);
+            transform: translateY(-3px);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Messages d'erreur animés */
+        .error-message {
+            color: #dc3545;
+            font-size: 0.9rem;
+            padding-left: 0;
+            border-left: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .error-message:hover {
+            padding-left: 8px;
+            border-left: 3px solid #dc3545;
+            background-color: rgba(220, 53, 69, 0.05);
+        }
+
+        .alert-danger {
+            border-left: 4px solid #dc3545;
+            transition: all 0.3s ease;
+            animation: shake 0.5s ease-in-out;
+        }
+
+        .alert-danger:hover {
+            background-color: rgba(220, 53, 69, 0.1);
+            transform: translateX(5px);
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+
+        /* Logo avec effet de survol */
+        .logo-container {
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .logo-container:hover {
+            transform: scale(1.05);
+        }
+
+        .logo-container img {
+            width: 150px;
+            height: auto;
+            display: block;
+            margin: 0 auto 20px;
+            transition: all 0.4s ease;
+        }
+
+        .logo-container img:hover {
+            filter: drop-shadow(0 0 5px rgba(255, 101, 0, 0.4));
+        }
+
+        /* Styles pour le logo Logosen */
+        .logosen img {
+            width: 100px;
+            height: 100px;
+            transition: all 0.3s ease;
+        }
+
+        .logosen img:hover {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        /* Couleur de fond avec effet de dégradé */
+        .color-freq {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #1E3E62 0%, #0f2c4a 100%);
+            height: 100vh;
+            color: white;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.5s ease;
+        }
+
+        .color-freq::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(255,255,255,0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .color-freq:hover::before {
+            opacity: 1;
+        }
+
+        /* Liens avec animation de soulignement */
+        .color-fav {
+            color: #FF6500;
+            text-decoration: none;
+            position: relative;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .color-fav:hover {
+            color: #ff4500;
+        }
+
+        .color-fav::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: #ff4500;
+            transition: width 0.3s ease;
+        }
+
+        .color-fav:hover::after {
+            width: 100%;
+        }
+
+        /* Bouton de soumission avec effets */
+        .sbmnt-btn {
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+            z-index: 1;
+        }
+
+        .sbmnt-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: all 0.6s ease;
+            z-index: -1;
+        }
+
+        .sbmnt-btn:hover::before {
+            left: 100%;
+        }
+
+        /* Style de bouton amélioré */
+        .btn {
+            font-weight: 500;
+            letter-spacing: 0.3px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn:active {
+            transform: translateY(-1px);
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-outline-secondary {
+            border-color: #1E3E62;
+            background-color: #1E3E62;
+            color: white;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-outline-secondary:hover {
+            background-color: #FF6500;
+            border-color: #FF6500;
+            box-shadow: 0 6px 15px rgba(255, 101, 0, 0.25);
+        }
+
+        /* Style pour les champs de formulaire */
+        .form-control {
+            padding: 0.75rem 1rem;
+            border-radius: 10px;
+            border: 1px solid #ced4da;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background-color: #f9f9f9;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .form-control:focus {
+            border-color: #FF6500;
+            box-shadow: 0 0 0 3px rgba(255, 101, 0, 0.25);
+            background-color: #fff;
+            transform: translateY(-2px);
+        }
+
+        .form-control:hover {
+            transform: translateY(-2px);
+            border-color: #FF6500;
+            box-shadow: 0 3px 8px rgba(255, 101, 0, 0.1);
+        }
+
+        /* Animation pour les étiquettes */
+        .form-label {
+            transition: all 0.3s ease;
+            display: inline-block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-control:focus + .form-label,
+        .form-label:hover {
+            color: #FF6500;
+            transform: translateX(5px);
+        }
+
+        /* Conteneur principal pour centrer le formulaire */
+        .container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Titres avec animation */
+        h2 {
+            transition: all 0.3s ease;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 3px;
+            background-color: #FF6500;
+            transition: all 0.4s ease;
+            transform: translateX(-50%);
+        }
+
+        h2:hover::after {
+            width: 80px;
+        }
+
+        /* Animations spéciales pour les messages de texte */
+        p {
+            transition: all 0.3s ease;
+        }
+
+        p:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Animation pour le lien de mot de passe oublié */
+        div.m-2 {
+            transition: all 0.3s ease;
+        }
+
+        div.m-2:hover {
+            transform: translateX(5px);
+        }
+
+        /* Optimisations mobiles */
+        @media (max-width: 768px) {
+            .form-container {
+                padding: 1.5rem;
+                width: 90%;
+            }
+        }
+    </style>
+
+    <div class="container d-flex align-items-center">
+        <div class="form-container ">
+            <h2 class="text-center mb-4">Se connecter</h2>
+            <p class="text-center mb-2">Vous n'avez pas de compte ?
+                <a href="{% url 'authentication:signup' %}" class="color-fav">Creer un compte</a>
+            </p>
+            {% if error_message %}
+                <div class="alert alert-danger text-center">
+                    {{ error_message }}
+                </div>
+            {% endif %}
+            <form method="post" novalidate>
+                {% csrf_token %}
+                <!-- Champ username -->
+                <div class="mb-3">
+                    <label for="username" class="form-label">Nom d'utilisateur ou Email</label>
+                    <input
+                        type="text"
+                        name="username"
+                        id="username"
+                        class="form-control"
+                        placeholder="Entrez votre nom d'utilisateur ou email"
+                        required
+                    >
+                </div>
+                <!-- Champ password -->
+                <div class="mb-3">
+                    <label for="password" class="form-label">Mot de passe</label>
+                    <input
+                        type="password"
+                        name="password"
+                        id="password"
+                        class="form-control"
+                        placeholder="Entrez votre mot de passe"
+                        required
+                    >
+                </div>
+                <div class="m-2"><a href="{% url 'authentication:password_reset' %}" class="color-fav">Mot de passe oublie</a></div>
+                <!-- Bouton de connexion -->
+                <button type="submit" class="btn btn-outline-secondary sbmnt-btn w-100 mb-2">Se connecter</button>
+            </form>
+            <div class="mt-3 text-center">
+                <p>Vous utilisez Google ? <a href="{% provider_login_url 'google' %}" class="color-fav">Continuer avec Google</a></p>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
