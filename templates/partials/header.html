@@ -42,18 +42,10 @@
           <button class="btn mx-4">
             <i style="color: white" class="bi bi-bell"></i>
           </button>
-          {% comment %} {% if user.is_authenticated %} {% endcomment %}
-          {% comment %} <a href="{% url "authentification:logout" %}" class="btn createCount text-white">Se deconnecter</a>
-          <a href="{% url 'Profiles:profile1' %}" class="btn">
-            <i class="bi bi-person" style="color: white"></i>
-          </a> {% endcomment %}
-          
-          {% comment %} {% else %} {% endcomment %}
-          {% comment %} {% url "authentification:register1" %} {% endcomment %}
           <a href="{% if user.is_authenticated %}
                     {% url 'authentication:logout' %}
                 {% else %}
-                    {% url 'authentication:login' %}
+                    {% url 'authentication:signup' %}
                 {% endif %}"
           class="btn createCount text-white">
             {% if user.is_authenticated %}
@@ -61,10 +53,7 @@
             {% else %}
                 Créer un compte
             {% endif %}
-          </a>
-
-          {% comment %} {% endif %} {% endcomment %}
-          
+          </a>          
         </div>
       </div>
     </div>

@@ -17,6 +17,7 @@ class CustomUser(AbstractUser):
     )
     profile_photo = models.ImageField(upload_to='profile_photos/', blank=True, null=True)
     cover_photo = models.ImageField(upload_to='cover_photos/', blank=True, null=True)
+    
 
     def __str__(self):
         return f"{self.prenom} {self.nom}"

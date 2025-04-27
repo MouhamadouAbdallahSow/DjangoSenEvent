@@ -8,7 +8,6 @@ from django.contrib.auth import logout
 from django.contrib.auth.forms import SetPasswordForm
 
 
-
 User = get_user_model()
 
 # Inscription (pas de compte)
@@ -33,6 +32,20 @@ def signup_view(request):
 
 
 # Choix du type d'utilisateur (createur , visiteur, participant)
+# @login_required
+# def choose_profile_view(request):
+#     if request.method == 'POST':
+#         form = ProfileChoiceForm(request.POST, request.FILES, instance=request.user)
+#         if form.is_valid():
+#             user = form.save(commit=False)
+#             user.profile_type = form.cleaned_data['profile_type']
+#             user.save()  # Sauvegarde finale avec toutes les données
+#             return redirect("profiles:user_profile")
+#     else:
+#         form = ProfileChoiceForm(instance=request.user)
+#     return render(request, 'authentication/choose_profile.html', {'form': form})
+
+
 @login_required
 def choose_profile_view(request):
     if request.method == 'POST':
@@ -44,17 +57,22 @@ def choose_profile_view(request):
         form = ProfileChoiceForm()
     return render(request, 'authentication/choose_profile.html', {'form': form})
 
-# Se connecter (possede un compte)
+
 def login_view(request):
     if request.method == "POST":
-        username = request.POST.get("username")
+        identifier = request.POST.get("username")  # Peut être email ou username
         password = request.POST.get("password")
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
+        
+        # Essayer d'abord avec l'email
+        user = authenticate(request, email=identifier, password=password)
+        if not user:  # Si échec, essayer avec le username
+            user = authenticate(request, username=identifier, password=password)
+        
+        if user:
             login(request, user)
-            return redirect("profiles:user_profile")  # Redirection vers la page unique
+            return redirect("profiles:user_profile")
         else:
-            error_message = "Invalid username or password."
+            error_message = "Identifiants invalides"
     else:
         error_message = None
     
@@ -64,20 +82,25 @@ def logout_view(request):
     logout(request)
     return redirect('home:acceuil')  # Redirige vers la page d'accueil
 
+# authentication/views.py
 def set_password_view(request):
+    if not request.user.is_authenticated:
+        return redirect('authentication:login')
+
     if request.method == 'POST':
         form = SetPasswordForm(request.user, request.POST)
         if form.is_valid():
             user = form.save()
-            # Ajouter cette ligne cruciale
-            user.backend = 'django.contrib.auth.backends.ModelBackend'
+            user.backend = 'django.contrib.auth.backends.ModelBackend'  # Crucial
+            login(request, user)  # Recharge la session
             
+            # Force la mise à jour des données de session
+            request.session.modified = True
             if 'force_password_setup' in request.session:
                 del request.session['force_password_setup']
-                request.session.modified = True
             
-            login(request, user)  # Maintenant le backend est défini
             return redirect('profiles:user_profile')
     else:
         form = SetPasswordForm(request.user)
+    
     return render(request, 'authentication/set_password.html', {'form': form})
